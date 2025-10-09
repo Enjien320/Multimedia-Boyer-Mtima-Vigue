@@ -6,3 +6,6 @@ C'st du 16:9
 
 Pour une proportion 4:3 avec la même largeur, quelle hauteur faut-il donner ?
 il faut une hauteur de 720 pixels
+
+Que constatez-vous en changent la taille du SVG ?
+On constate que les formes se sont adaptées à la taille du SVG et qu'elles s'étendent sur tout le SVG.
