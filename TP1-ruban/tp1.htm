@@ -34,7 +34,10 @@ class Led {
 
 /** Représente et dessine un ruban horizontal de leds dans un SVG */
 class LedRibbon {
-    constructor(parent, number, x, y, radius, spacing=0) {
+  
+    constructor(parent, {
+      number, x, y, radius=8, spacing=0
+    } = {}) {
       
         // liste des leds créées par ce ruban
         var led1 = new Led(parent, x, y, radius);
@@ -56,7 +59,7 @@ const svg = SVGelement.fromSelector("#dessin")
 const led = new Led(svg, 50, 50, 16)
 
 // dessiner un ruban de leds
-const ribbon = new LedRibbon(svg, 8, 8, 8, 4)
+const ribbon = new LedRibbon(svg, {number: 16, x: 8, y: 8})
 
   </script>
 </body>
