@@ -30,6 +30,36 @@ class Led {
             'stroke-width': radius/8
         })
     }
+    
+    turnOn(timeline, duration=0.1, position=">") {
+      
+      timeline.to(this.led, {duration: duration}, position);
+      
+      gsap.set(this.led, {
+        fill: "gray"
+      })
+      // animer vers la situation finale
+      gsap.to(this.led, {
+        fill: "red", 
+        duration: duration,
+        ease: "none",
+      })
+    }
+    
+    turnOff(timeline, duration=0.1, position=">") {
+      
+      timeline.to(this.led, {duration: duration}, position);
+      
+      gsap.set(this.led, {
+        fill: "red"
+      })
+      // animer vers la situation finale
+      gsap.to(this.led, {
+        fill: "gray", 
+        duration: duration,
+        ease: "none",
+      })
+    }
 }
 
 /** Représente et dessine un ruban horizontal de leds dans un SVG */
@@ -55,8 +85,13 @@ Math.degrees = (rad) => rad / Math.PI * 180
 
 // dessin SVG
 const svg = SVGelement.fromSelector("#dessin")
+
 // dessiner une led
 const led = new Led(svg, 50, 50, 16)
+// allumer la led puis l'éteindre, dans une timeline
+const TLled = gsap.timeline()
+led.turnOn(TLled, 1.0) // allumage en 1 seconde
+led.turnOff(TLled, 0.5, ">+2") // extinction en 1/2 s après 2 secondes
 
 // dessiner un ruban de leds
 const ribbon = new LedRibbon(svg, {number: 16, x: 8, y: 8})
