@@ -22,13 +22,26 @@
 /** Représente et dessine une led dans un SVG */
 class Led {
     constructor(parent, x, y, radius) {
-        this.led = parent.appendElement("circle", {
+      
+        // state = 0 (éteinte)
+        // state = 1 (allumée)
+        this._state = 0;
+        
+        this._led = parent.appendElement("circle", {
             cx: x, cy: y, 
             r: radius - radius/16,
             fill: "gray",
             stroke: "black",
             'stroke-width': radius/8
         })
+    }
+    
+    get led() {
+      return this._led;
+    }
+    
+    get state() {
+      return this._state;
     }
     
     turnOn(timeline, duration=0.1, position=">") {
@@ -60,6 +73,13 @@ class Led {
         ease: "none",
       })
     }
+    
+    set state(valeur) {
+      
+      const color = gsap.utils.interpolate("gray", "rgb(127, 255, 0)", valeur)
+      this.led.setAttribute("fill", color);
+      this._state = valeur;
+    }
 }
 
 /** Représente et dessine un ruban horizontal de leds dans un SVG */
@@ -84,14 +104,22 @@ Math.radians = (deg) => deg * Math.PI / 180
 Math.degrees = (rad) => rad / Math.PI * 180
 
 // dessin SVG
-const svg = SVGelement.fromSelector("#dessin")
+const svg = SVGelement.fromSelector("#dessin");
 
 // dessiner une led
-const led = new Led(svg, 50, 50, 16)
+const led = new Led(svg, 50, 50, 16);
 // allumer la led puis l'éteindre, dans une timeline
-const TLled = gsap.timeline()
-led.turnOn(TLled, 1.0) // allumage en 1 seconde
-led.turnOff(TLled, 0.5, ">+2") // extinction en 1/2 s après 2 secondes
+const TLled = gsap.timeline();
+
+// pareil mais en manipulant la led comme si c'était un objet du DOM
+TLled.to(led, {
+    state: 1.0, // 1.0 = pleinement allumée
+    duration: 1.0
+})
+TLled.to(led, {
+    state: 0.0, // 0.0 = totalement éteinte
+    duration: 0.5
+}, ">+2") // voir timeline.to(target, vars, position)
 
 // dessiner un ruban de leds
 const ribbon = new LedRibbon(svg, {number: 16, x: 8, y: 8})
