@@ -12,12 +12,27 @@
       const width = 400
       const height = 200
       
+      function ScatterPlot(iris) {
+
+        const svg = d3.select("dessin");
+        svg.attr("viewBox", `-5 -5 ${width+10} ${height+10}`);
+
+        svg.select("<circle>")
+        .data(iris)
+        .join()
+        .attr("cx", d => d.sepalLength * 80 - 260)
+        .attr("cy", d => d.petalLength * 25)
+        .attr("r", width / 100)
+        .attr("fill", "red");
+      }
+      
       async function main() {
+
         const iris = await d3.json("iris.json")
         ScatterPlot(iris)
       }
-      main()
 
+      main()
 
     </script>
   </body>
