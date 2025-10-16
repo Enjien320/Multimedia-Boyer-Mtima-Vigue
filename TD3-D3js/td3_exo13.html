@@ -32,7 +32,10 @@
       // enter = sélection des nouveaux éléments, pour les nouvelles données
       enter.append("li").text(d => `Et j'y rajoute ${d.article} ${d.nom}`)
     },
-    undefined, 
+    update => {
+      // update = sélection des éléments déjà là qu'il faut évent. modifier
+      update //.text(d => `Je dois déjà acheter ${d.article} ${d.nom}`)
+    },
     exit => {
       // exit = éléments à supprimer car en trop par rapport aux données
       exit.remove()
