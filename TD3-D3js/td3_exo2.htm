@@ -9,22 +9,59 @@
     <svg id="dessin"></svg>
     <script>
     
-      const width = 400
-      const height = 200
+      const width = 5000
+      const height = 15000
+
+      const colors = {
+        "setosa": "#69b3a2",
+        "versicolor": "#a269b3",
+        "virginica": "#b3a269",
+      }
+
+      const margin = {top: 20, right: 10, bottom: 30, left: 40}
       
       function ScatterPlot(iris) {
 
-        const svg = d3.select("dessin");
-        svg.attr("viewBox", `-5 -5 ${width+10} ${height+10}`);
+        const fX = d3.scaleLinear()
+          .domain(d3.extent(iris, d => d.sepalLength)) // amplitude des données
+          .range([margin.left, width - margin.right]) // amplitude des pixels
 
-        svg.select("<circle>")
+        const fY = d3.scaleLinear()
+          .domain(d3.extent(iris, d => d.petalLength)) // amplitude des données
+          .range([height - margin.bottom, margin.top]) // amplitude des pixels
+
+        const svg = d3.select("#dessin")
+        .attr("viewBox", `0 0 ${width} ${height}`);
+
+        svg.selectAll("circle")
         .data(iris)
-        .join()
-        .attr("cx", d => d.sepalLength * 80 - 260)
-        .attr("cy", d => d.petalLength * 25)
+        .join("circle")
+        .attr("cx", d => fX(d.sepalLength))
+        .attr("cy", d => fY(d.sepalLength))
         .attr("r", width / 100)
-        .attr("fill", "red");
-      }
+        .attr("fill", d => colors[d.species]);
+
+        svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(fX))
+
+        svg.append("g")
+          .attr("transform", `translate(${margin.left},0)`)
+          .call(d3.axisLeft(fY))
+
+          gTitresAxes.append("text")
+        .attr("x", width - margin.right)
+        .attr("y", height)
+        .attr("dominant-baseline", "ideographic")
+        .text("sepalLength")
+
+      gTitresAxes.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -margin.top)
+        .attr("y", 0)
+        .attr("dominant-baseline", "hanging")
+        .text("petalLength")
+            }
       
       async function main() {
 
