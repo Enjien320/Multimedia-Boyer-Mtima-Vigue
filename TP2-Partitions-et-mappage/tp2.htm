@@ -13,9 +13,26 @@ function PartitionFloue(trapezes) {
 
     const svg = d3.select("#dessin");
     const width = 600;
-    const heigth = width / 4;
+    const height = width / 4;
 
-    svg.attr("width", width).attr("height", heigth);
+    const margin = {
+      top: 20,
+      right: 10,
+      bottom: 20,
+      left: 10
+    };
+
+    const N = trapezes.length;
+
+    const fy = d3.scaleLinear()
+    .domain([0, 1])
+    .range(height - margin.bottom, margin.top);
+
+    const fx = d3.scaleLinear()
+    .domain([trapezes[0].supL - 1, trapezes[N - 1].supH + 1])
+    .range(margin.left, width - margin.right);
+
+    svg.attr("width", width).attr("height", height);
 
     console.log("TRAPEZES", trapezes)
 }
