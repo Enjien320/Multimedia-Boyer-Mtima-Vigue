@@ -10,6 +10,13 @@
   <script type="module">
 
 function PartitionFloue(trapezes) {
+
+    const svg = d3.select("#dessin");
+    const width = 600;
+    const heigth = width / 4;
+
+    svg.attr("width", width).attr("height", heigth);
+
     console.log("TRAPEZES", trapezes)
 }
 
